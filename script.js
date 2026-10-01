@@ -1,6 +1,9 @@
 // Load saved posts from localStorage or start with an empty array
 let posts = JSON.parse(localStorage.getItem("posts")) || [];
 
+// Track which post is being edited
+let editingPostId = null;
+
 // Select form elements from the HTML
 const postForm = document.getElementById("postForm");
 const postTitle = document.getElementById("postTitle");
@@ -30,6 +33,9 @@ postForm.addEventListener("submit", function (event) {
         return;
     }
 
+    // Check whether we are creating a new post or editing an existing post
+if (editingPostId === null) {
+
     // Create a new post object
     let post = {
         id: Date.now(),
@@ -39,6 +45,21 @@ postForm.addEventListener("submit", function (event) {
 
     // Add the new post to the posts array
     posts.push(post);
+
+} else {
+
+    // Find the post being edited
+    let postToEdit = posts.find(function (post) {
+        return post.id === editingPostId;
+    });
+
+    // Update the existing post
+    postToEdit.title = postTitle.value;
+    postToEdit.content = postContent.value;
+
+    // Stop editing
+    editingPostId = null;
+}
 
     // Save posts to localStorage
     savePosts();
@@ -73,6 +94,22 @@ function renderPosts() {
         let postText = document.createElement("p");
         postText.innerText = currentPost.content;
 
+        // Create an edit button
+let editButton = document.createElement("button");
+editButton.innerText = "Edit";
+
+// Load the selected post into the form
+editButton.addEventListener("click", function () {
+    postTitle.value = currentPost.title;
+    postContent.value = currentPost.content;
+
+    // Remember which post is being edited
+    editingPostId = currentPost.id;
+
+    // Move the user back to the form
+    postTitle.focus();
+});
+
         // Create a delete button
         let deleteButton = document.createElement("button");
         deleteButton.innerText = "Delete";
@@ -94,6 +131,7 @@ function renderPosts() {
         // Add the post elements to the post container
         postItem.appendChild(postHeading);
         postItem.appendChild(postText);
+        postItem.appendChild(editButton);
         postItem.appendChild(deleteButton);
 
         // Add the post to the page

@@ -1,0 +1,49 @@
+/* Basic page styling */
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+/* Form styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input,
+textarea {
+    padding: 10px;
+    font-size: 16px;
+}
+
+textarea {
+    min-height: 120px;
+}
+
+button {
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+/* Validation errors */
+.error-message {
+    color: red;
+}
+
+/* Blog posts */
+#postList > div {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+}
+
+#postList button {
+    margin-right: 10px;
+}
